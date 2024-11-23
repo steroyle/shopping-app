@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "esnext", // or "es2020", "es2022"
+    "module": "esnext", // or "es2020", "es2022"
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react-jsx" // or "react" if using older React versions
+  },
+  "include": ["src", "vite-env.d.ts"]
+}
