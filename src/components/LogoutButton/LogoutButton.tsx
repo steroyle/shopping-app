@@ -1,5 +1,5 @@
 import {signOut} from 'firebase/auth';
-import {auth} from '../../../config/firebaseConfig';
+import {auth} from '../../firebase/firebaseConfig';
 import {Button} from '@mantine/core';
 
 const LogoutButton = () => {
