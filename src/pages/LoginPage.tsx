@@ -2,7 +2,9 @@ import {signInWithPopup, GoogleAuthProvider} from 'firebase/auth';
 import {auth} from '../../config/firebaseConfig';
 import {Navigate} from 'react-router-dom';
 import {useAuth} from '../contexts/AuthContext';
-import {Button} from '@mantine/core';
+import {Button, Paper, Stack, Text, Title} from '@mantine/core';
+import Page from '../layouts/Page';
+import LoginLayout from '../layouts/LoginLayout';
 
 export function LoginPage() {
   const {user} = useAuth();
@@ -28,12 +30,13 @@ export function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-white to-pink-100 flex items-center justify-center p-4">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
-        <div className="text-center">
-          <p className="mt-2 text-sm text-gray-600">Sign in to access your account</p>
-        </div>
-        <div className="mt-8 space-y-4">
+    <LoginLayout>
+      <Title mb="lg" fz={40}>
+        Shopping App
+      </Title>
+      <Paper withBorder p="xl">
+        <Stack align="center" gap="lg">
+          <Text>Sign in to access your shopping list</Text>
           <Button
             variant="outline"
             onClick={handleGoogleLogin}
@@ -43,14 +46,14 @@ export function LoginPage() {
                 src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
                 alt="Google logo"
                 height={15}
-                width="auto"
               />
             }
+            w="fit-content"
           >
             Sign in with Google
           </Button>
-        </div>
-      </div>
-    </div>
+        </Stack>
+      </Paper>
+    </LoginLayout>
   );
 }
