@@ -6,6 +6,7 @@ function Nav() {
     <Stack component="nav" gap={0}>
       <NavLink to="/" label="Shopping List" component={Link} />
       <NavLink to="/items" label="Items" component={Link} />
+      <NavLink to="/categories" label="Categories" component={Link} />
     </Stack>
   );
 }

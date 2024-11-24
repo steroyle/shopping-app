@@ -1,15 +1,14 @@
 import {Title} from '@mantine/core';
-import {useAuth} from '../contexts/AuthContext';
 import Page from '../layouts/Page';
+import AddItem from '../components/AddItem/AddItem';
 
-export function HomePage() {
-  const {user} = useAuth();
-
+export function ItemsPage() {
   return (
     <Page>
       <Title mb="md" fz={20}>
-        Welcome {user?.displayName}
+        Items
       </Title>
+      <AddItem />
     </Page>
   );
 }

@@ -1,9 +1,11 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import {MantineProvider} from '@mantine/core';
 import {AuthProvider} from './contexts/AuthContext';
+import {ProtectedRoute} from './components/ProtectedRoute';
 import {LoginPage} from './pages/LoginPage';
 import {HomePage} from './pages/HomePage';
-import {ProtectedRoute} from './components/ProtectedRoute';
+import {ItemsPage} from './pages/ItemsPage';
+import {CategoriesPage} from './pages/CategoriesPage';
 
 function App() {
   return (
@@ -17,6 +19,22 @@ function App() {
               element={
                 <ProtectedRoute>
                   <HomePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/items"
+              element={
+                <ProtectedRoute>
+                  <ItemsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/categories"
+              element={
+                <ProtectedRoute>
+                  <CategoriesPage />
                 </ProtectedRoute>
               }
             />

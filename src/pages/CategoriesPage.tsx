@@ -1,15 +1,14 @@
 import {Title} from '@mantine/core';
-import {useAuth} from '../contexts/AuthContext';
 import Page from '../layouts/Page';
+import ManageCategories from '../components/ManageCategories/ManageCategories';
 
-export function HomePage() {
-  const {user} = useAuth();
-
+export function CategoriesPage() {
   return (
     <Page>
       <Title mb="md" fz={20}>
-        Welcome {user?.displayName}
+        Categories
       </Title>
+      <ManageCategories />
     </Page>
   );
 }
