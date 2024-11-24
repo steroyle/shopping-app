@@ -1,5 +1,6 @@
-import {Anchor, Box, Button, Flex, Indicator, Stack, Text} from '@mantine/core';
-import {Category} from '../../firebase/firestoreService';
+import React, {useState, useEffect} from 'react';
+import {Box, Button, Flex, Stack, Text} from '@mantine/core';
+import {Category, deleteCategory} from '../../firebase/firestoreService';
 import {Link, useNavigate} from 'react-router-dom';
 
 interface CategoryTableProps {
@@ -7,13 +8,28 @@ interface CategoryTableProps {
 }
 
 const CategoryTable: React.FC<CategoryTableProps> = ({categories}) => {
+  const [categoryList, setCategoryList] = useState<Category[]>([]);
+
+  useEffect(() => {
+    console.log('Received categories:', categories);
+    setCategoryList(categories);
+  }, [categories]);
+
   const navigate = useNavigate();
 
-  const handleEdit = (categoryId: string | undefined) => {
+  const handleEdit = (categoryId: string) => {
     navigate(`/edit-category/${categoryId}`);
   };
 
-  const rows = categories.map((category) => (
+  const handleDelete = (categoryId: string) => {
+    deleteCategory(categoryId).then(() => {
+      setCategoryList((prevCategories) =>
+        prevCategories.filter((category) => category.id !== categoryId),
+      );
+    });
+  };
+
+  const rows = categoryList.map((category) => (
     <Flex
       columnGap="md"
       py="sm"
@@ -29,11 +45,15 @@ const CategoryTable: React.FC<CategoryTableProps> = ({categories}) => {
         component={Link}
         to={`/categories/edit/${category.id}`}
         variant="outline"
-        onClick={() => handleEdit(category.id)}
+        onClick={() => category.id && handleEdit(category.id)}
       >
         Edit
       </Button>
-      <Button variant="outline" color="red">
+      <Button
+        variant="outline"
+        color="red"
+        onClick={() => category.id && handleDelete(category.id)}
+      >
         Delete
       </Button>
     </Flex>

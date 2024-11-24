@@ -1,5 +1,5 @@
 import {db} from './firebaseConfig';
-import {collection, addDoc, doc, updateDoc, getDocs, getDoc} from 'firebase/firestore';
+import {collection, addDoc, doc, updateDoc, getDocs, getDoc, deleteDoc} from 'firebase/firestore';
 
 interface Item {
   name: string;
@@ -130,5 +130,15 @@ export async function updateCategory(
     console.log('Category updated successfully');
   } catch (e) {
     console.error('Error updating category: ', e);
+  }
+}
+
+export async function deleteCategory(categoryId: string): Promise<void> {
+  try {
+    const categoryRef = doc(db, 'categories', categoryId);
+    await deleteDoc(categoryRef);
+    console.log('Category successfully deleted!');
+  } catch (error) {
+    console.error('Error removing category: ', error);
   }
 }
