@@ -19,7 +19,8 @@ function ManageCategories() {
   const handleAddCategory = async (e: React.FormEvent) => {
     e.preventDefault();
     if (categoryName.trim() === '') return;
-    await addCategory({name: categoryName, color: categoryColor});
+    // Omit id when adding since Firebase will generate it
+    await addCategory({name: categoryName, color: categoryColor} as Category);
     setCategoryName('');
     setCategoryColor('#000000'); // Reset to default color
     const updatedCategories = await getCategories();
@@ -28,10 +29,7 @@ function ManageCategories() {
 
   return (
     <Stack gap="md">
-      <Paper withBorder p="md">
-        <Title order={2} mb="md">
-          Add Category
-        </Title>
+      <Paper withBorder p="md" bg="gray.0">
         <form onSubmit={handleAddCategory}>
           <Group gap="sm">
             <TextInput

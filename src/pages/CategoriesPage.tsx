@@ -5,7 +5,7 @@ import ManageCategories from '../components/ManageCategories/ManageCategories';
 export function CategoriesPage() {
   return (
     <Page>
-      <Title mb="md" fz={20}>
+      <Title mb="md" fz={35}>
         Categories
       </Title>
       <ManageCategories />

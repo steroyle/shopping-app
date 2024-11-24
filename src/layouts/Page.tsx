@@ -9,18 +9,20 @@ interface PageProps {
 
 const Page = ({children}: PageProps) => {
   return (
-    <Container size={1200} py="md">
-      <Flex direction="column" h="100vh">
-        <Header />
-        <Group gap="xl" flex={1} align="flex-start">
-          <Nav />
-          <Box component="main" flex={1}>
-            {children}
-          </Box>
-        </Group>
-        <Footer />
-      </Flex>
-    </Container>
+    <>
+      <Header />
+      <Container size={1200} py="md">
+        <Flex direction="column" h="100vh">
+          <Group gap="xl" flex={1} align="flex-start">
+            <Nav />
+            <Box component="main" flex={1}>
+              {children}
+            </Box>
+          </Group>
+          <Footer />
+        </Flex>
+      </Container>
+    </>
   );
 };
 

@@ -6,6 +6,7 @@ import {LoginPage} from './pages/LoginPage';
 import {HomePage} from './pages/HomePage';
 import {ItemsPage} from './pages/ItemsPage';
 import {CategoriesPage} from './pages/CategoriesPage';
+import {CategoryEditPage} from './pages/CategoryEditPage';
 
 function App() {
   return (
@@ -35,6 +36,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <CategoriesPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/categories/edit/:categoryId"
+              element={
+                <ProtectedRoute>
+                  <CategoryEditPage />
                 </ProtectedRoute>
               }
             />

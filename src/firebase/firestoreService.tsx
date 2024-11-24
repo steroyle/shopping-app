@@ -1,5 +1,5 @@
 import {db} from './firebaseConfig';
-import {collection, addDoc, doc, updateDoc, getDocs} from 'firebase/firestore';
+import {collection, addDoc, doc, updateDoc, getDocs, getDoc} from 'firebase/firestore';
 
 interface Item {
   name: string;
@@ -24,6 +24,7 @@ type ItemId = string;
 type Quantity = number;
 
 export interface Category {
+  id?: string; // Firebase auto-generated ID
   name: string;
   color: string;
 }
@@ -91,9 +92,43 @@ export async function addCategory(category: Category): Promise<void> {
 export async function getCategories(): Promise<Category[]> {
   try {
     const querySnapshot = await getDocs(collection(db, 'categories'));
-    return querySnapshot.docs.map((doc) => doc.data() as Category);
+    console.log(querySnapshot.docs);
+    return querySnapshot.docs.map((doc) => ({
+      id: doc.id, // Firebase ID
+      ...doc.data(), // Spread the rest of the document data
+    })) as Category[];
   } catch (e) {
     console.error('Error retrieving categories: ', e);
     return [];
+  }
+}
+
+export async function getCategoryById(categoryId: string): Promise<Category | null> {
+  try {
+    const docRef = doc(db, 'categories', categoryId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return {...docSnap.data(), id: docSnap.id} as Category;
+    } else {
+      console.log('No category found with that ID');
+      return null;
+    }
+  } catch (e) {
+    console.error('Error retrieving category: ', e);
+    return null;
+  }
+}
+
+export async function updateCategory(
+  categoryId: string,
+  category: Partial<Category>,
+): Promise<void> {
+  try {
+    const categoryRef = doc(db, 'categories', categoryId);
+    await updateDoc(categoryRef, category);
+    console.log('Category updated successfully');
+  } catch (e) {
+    console.error('Error updating category: ', e);
   }
 }

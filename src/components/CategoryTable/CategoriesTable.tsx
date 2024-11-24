@@ -1,11 +1,18 @@
-import {Box, Button, Flex, Indicator, Stack, Text} from '@mantine/core';
+import {Anchor, Box, Button, Flex, Indicator, Stack, Text} from '@mantine/core';
 import {Category} from '../../firebase/firestoreService';
+import {Link, useNavigate} from 'react-router-dom';
 
 interface CategoryTableProps {
   categories: Category[];
 }
 
 const CategoryTable: React.FC<CategoryTableProps> = ({categories}) => {
+  const navigate = useNavigate();
+
+  const handleEdit = (categoryId: string | undefined) => {
+    navigate(`/edit-category/${categoryId}`);
+  };
+
   const rows = categories.map((category) => (
     <Flex
       columnGap="md"
@@ -18,7 +25,14 @@ const CategoryTable: React.FC<CategoryTableProps> = ({categories}) => {
         style={{backgroundColor: category.color, width: 25, height: 25, borderRadius: '50%'}}
       ></Box>
       <Text flex={1}>{category.name}</Text>
-      <Button variant="outline">Edit</Button>
+      <Button
+        component={Link}
+        to={`/categories/edit/${category.id}`}
+        variant="outline"
+        onClick={() => handleEdit(category.id)}
+      >
+        Edit
+      </Button>
       <Button variant="outline" color="red">
         Delete
       </Button>

@@ -1,14 +1,20 @@
-import {Group, Title} from '@mantine/core';
+import {Box, Container, Group, Title, Text} from '@mantine/core';
 import LogoutButton from '../LogoutButton/LogoutButton';
 
 function Header() {
   return (
-    <Group component="header" justify="space-between">
-      <Title mb="md" fz={25}>
-        Shopping App
-      </Title>
-      <LogoutButton />
-    </Group>
+    <Box component="header" style={{borderBottom: '1px solid #e9ecef'}}>
+      <Container size={1200}>
+        <Group py="md" justify="space-between" align="center">
+          <Title fz={25}>
+            <Text variant="gradient" gradient={{from: 'red', to: 'pink', deg: 90}} fw={700} fz={25}>
+              Shopping App
+            </Text>
+          </Title>
+          <LogoutButton />
+        </Group>
+      </Container>
+    </Box>
   );
 }
 
