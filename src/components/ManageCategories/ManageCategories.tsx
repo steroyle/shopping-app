@@ -1,9 +1,11 @@
 import {useState, useEffect} from 'react';
 import {addCategory, getCategories, Category} from '../../firebase/firestoreService';
+import CategoryTable from '../CategoryTable/CategoriesTable';
+import {Button, ColorInput, Group, Paper, Stack, TextInput, Title} from '@mantine/core';
 
 function ManageCategories() {
   const [categoryName, setCategoryName] = useState('');
-  const [categoryColor, setCategoryColor] = useState('#000000'); // Default color
+  const [categoryColor, setCategoryColor] = useState(''); // Default color
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
@@ -25,29 +27,25 @@ function ManageCategories() {
   };
 
   return (
-    <div>
-      <h2>Manage Categories</h2>
-      <form onSubmit={handleAddCategory}>
-        <input
-          value={categoryName}
-          onChange={(e) => setCategoryName(e.target.value)}
-          placeholder="Category Name"
-        />
-        <input
-          type="color"
-          value={categoryColor}
-          onChange={(e) => setCategoryColor(e.target.value)}
-        />
-        <button type="submit">Add Category</button>
-      </form>
-      <ul>
-        {categories.map((category, index) => (
-          <li key={index}>
-            <span style={{color: category.color}}>{category.name}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Stack gap="md">
+      <Paper withBorder p="md">
+        <Title order={2} mb="md">
+          Add Category
+        </Title>
+        <form onSubmit={handleAddCategory}>
+          <Group gap="sm">
+            <TextInput
+              value={categoryName}
+              onChange={(e) => setCategoryName(e.target.value)}
+              placeholder="Category Name"
+            />
+            <ColorInput value={categoryColor} placeholder="Colour" onChangeEnd={setCategoryColor} />
+            <Button type="submit">Add Category</Button>
+          </Group>
+        </form>
+      </Paper>
+      <CategoryTable categories={categories} />
+    </Stack>
   );
 }
 
