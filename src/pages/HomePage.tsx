@@ -1,4 +1,4 @@
-import {Title} from '@mantine/core';
+import {Text} from '@mantine/core';
 import {useAuth} from '../contexts/AuthContext';
 import Page from '../layouts/Page';
 
@@ -6,10 +6,8 @@ export function HomePage() {
   const {user} = useAuth();
 
   return (
-    <Page>
-      <Title mb="md" fz={20}>
-        Welcome {user?.displayName}
-      </Title>
+    <Page title={`Welcome, ${user?.displayName}`}>
+      <Text>Home page content</Text>
     </Page>
   );
 }

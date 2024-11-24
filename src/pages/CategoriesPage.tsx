@@ -4,10 +4,7 @@ import ManageCategories from '../components/ManageCategories/ManageCategories';
 
 export function CategoriesPage() {
   return (
-    <Page>
-      <Title mb="md" fz={35}>
-        Categories
-      </Title>
+    <Page title="Categories">
       <ManageCategories />
     </Page>
   );

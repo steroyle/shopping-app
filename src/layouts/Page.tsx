@@ -1,13 +1,14 @@
 import Header from '../components/Header/Header';
 import Nav from '../components/Nav/Nav';
-import {Box, Container, Flex, Group} from '@mantine/core';
+import {Box, Container, Flex, Group, Title} from '@mantine/core';
 import Footer from '../components/Footer/Footer';
 
 interface PageProps {
+  title?: string;
   children: React.ReactNode;
 }
 
-const Page = ({children}: PageProps) => {
+const Page = ({children, title}: PageProps) => {
   return (
     <>
       <Header />
@@ -16,6 +17,11 @@ const Page = ({children}: PageProps) => {
           <Group gap="xl" flex={1} align="flex-start">
             <Nav />
             <Box component="main" flex={1}>
+              {title && (
+                <Title mb="md" fz={35}>
+                  {title}
+                </Title>
+              )}
               {children}
             </Box>
           </Group>

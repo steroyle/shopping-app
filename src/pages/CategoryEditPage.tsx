@@ -30,14 +30,10 @@ export function CategoryEditPage() {
   if (!category) return <Page>Loading...</Page>;
 
   return (
-    <Page>
-      <Title order={2} mb="md">
-        Edit Category
-      </Title>
-      <Paper withBorder p="md">
+    <Page title="Edit Category">
+      <Paper withBorder p="md" bg="gray.0">
         <Group gap="sm" align="flex-end">
           <TextInput
-            label="Name"
             value={category.name}
             onChange={(e) => setCategory({...category, name: e.target.value})}
           />

@@ -3,7 +3,7 @@ import LogoutButton from '../LogoutButton/LogoutButton';
 
 function Header() {
   return (
-    <Box component="header" style={{borderBottom: '1px solid #e9ecef'}}>
+    <Box component="header" bg="gray.0" style={{borderBottom: '1px solid #e9ecef'}}>
       <Container size={1200}>
         <Group py="md" justify="space-between" align="center">
           <Title fz={25}>
