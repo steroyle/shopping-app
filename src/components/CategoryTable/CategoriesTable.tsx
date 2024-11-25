@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Box, Button, Flex, Stack, Text} from '@mantine/core';
+import {Box, Button, Flex, Group, Modal, Stack, Text} from '@mantine/core';
 import {Category, deleteCategory} from '../../firebase/firestoreService';
 import {Link, useNavigate} from 'react-router-dom';
 
@@ -9,6 +9,8 @@ interface CategoryTableProps {
 
 const CategoryTable: React.FC<CategoryTableProps> = ({categories}) => {
   const [categoryList, setCategoryList] = useState<Category[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
+  const [categoryToDelete, setCategoryToDelete] = useState<string | null>(null); // State for category to delete
 
   useEffect(() => {
     console.log('Received categories:', categories);
@@ -22,11 +24,25 @@ const CategoryTable: React.FC<CategoryTableProps> = ({categories}) => {
   };
 
   const handleDelete = (categoryId: string) => {
-    deleteCategory(categoryId).then(() => {
-      setCategoryList((prevCategories) =>
-        prevCategories.filter((category) => category.id !== categoryId),
-      );
-    });
+    setCategoryToDelete(categoryId);
+    setIsModalOpen(true);
+  };
+
+  const getCategoryName = (categoryId: string | null) => {
+    const category = categoryList.find((cat) => cat.id === categoryId);
+    return category ? category.name : '';
+  };
+
+  const confirmDelete = () => {
+    if (categoryToDelete) {
+      deleteCategory(categoryToDelete).then(() => {
+        setCategoryList((prevCategories) =>
+          prevCategories.filter((category) => category.id !== categoryToDelete),
+        );
+        setIsModalOpen(false);
+        setCategoryToDelete(null);
+      });
+    }
   };
 
   const rows = categoryList.map((category) => (
@@ -59,7 +75,23 @@ const CategoryTable: React.FC<CategoryTableProps> = ({categories}) => {
     </Flex>
   ));
 
-  return <Stack gap={0}>{rows}</Stack>;
+  return (
+    <>
+      <Stack gap={0}>{rows}</Stack>
+      <Modal opened={isModalOpen} onClose={() => setIsModalOpen(false)} title="Confirm Deletion">
+        <Text mb="md">
+          Are you sure you want to delete the <strong>{getCategoryName(categoryToDelete)}</strong>{' '}
+          category?
+        </Text>
+        <Group>
+          <Button color="red" onClick={confirmDelete}>
+            Yes, Delete
+          </Button>
+          <Button onClick={() => setIsModalOpen(false)}>Cancel</Button>
+        </Group>
+      </Modal>
+    </>
+  );
 };
 
 export default CategoryTable;
