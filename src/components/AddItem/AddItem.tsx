@@ -1,6 +1,18 @@
 import {useState, useEffect} from 'react';
 import {addItem, Category} from '../../firebase/firestoreService';
 import {getCategories} from '../../firebase/firestoreService';
+import {
+  Box,
+  Button,
+  Combobox,
+  Group,
+  Input,
+  InputBase,
+  Paper,
+  Text,
+  TextInput,
+  useCombobox,
+} from '@mantine/core';
 
 function AddItem() {
   const [name, setName] = useState('');
@@ -24,25 +36,57 @@ function AddItem() {
     setPrice('');
   };
 
+  const combobox = useCombobox({
+    onDropdownClose: () => combobox.resetSelectedOption(),
+  });
+
+  const [value, setValue] = useState<string | null>(null);
+
+  const options = categories.map((item) => (
+    <Combobox.Option value={item.name} key={item.name}>
+      <Group gap="sm">
+        <Box w={15} h={15} bg={item.color} style={{borderRadius: '50%'}} />
+        <Text>{item.name}</Text>
+      </Group>
+    </Combobox.Option>
+  ));
+
   return (
-    <form onSubmit={handleSubmit}>
-      <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" />
-      <select value={category} onChange={(e) => setCategory(e.target.value)}>
-        <option value="">Select Category</option>
-        {categories.map((cat, index) => (
-          <option key={index} value={cat.name}>
-            {cat.name}
-          </option>
-        ))}
-      </select>
-      <input
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-        placeholder="Price"
-        type="number"
-      />
-      <button type="submit">Add Item</button>
-    </form>
+    <Paper withBorder p="md" bg="gray.0">
+      <form onSubmit={handleSubmit}>
+        <Group gap="sm">
+          <TextInput value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" />
+
+          <Combobox
+            store={combobox}
+            onOptionSubmit={(val) => {
+              setValue(val);
+              combobox.closeDropdown();
+            }}
+          >
+            <Combobox.Target>
+              <InputBase
+                component="button"
+                type="button"
+                pointer
+                rightSection={<Combobox.Chevron />}
+                rightSectionPointerEvents="none"
+                onClick={() => combobox.toggleDropdown()}
+                w={250}
+              >
+                {value || <Input.Placeholder>Pick value</Input.Placeholder>}
+              </InputBase>
+            </Combobox.Target>
+
+            <Combobox.Dropdown>
+              <Combobox.Options>{options}</Combobox.Options>
+            </Combobox.Dropdown>
+          </Combobox>
+
+          <Button type="submit">Add Item</Button>
+        </Group>
+      </form>
+    </Paper>
   );
 }
 
