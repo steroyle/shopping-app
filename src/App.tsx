@@ -7,6 +7,7 @@ import {HomePage} from './pages/HomePage';
 import {ItemsPage} from './pages/ItemsPage';
 import {CategoriesPage} from './pages/CategoriesPage';
 import {CategoryEditPage} from './pages/CategoryEditPage';
+import {ItemEditPage} from './pages/ItemEditPage';
 
 function App() {
   return (
@@ -32,6 +33,14 @@ function App() {
               }
             />
             <Route
+              path="/items/:itemId"
+              element={
+                <ProtectedRoute>
+                  <ItemEditPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/categories"
               element={
                 <ProtectedRoute>
@@ -40,7 +49,7 @@ function App() {
               }
             />
             <Route
-              path="/categories/edit/:categoryId"
+              path="/categories/:categoryId"
               element={
                 <ProtectedRoute>
                   <CategoryEditPage />

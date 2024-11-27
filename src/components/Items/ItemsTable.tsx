@@ -1,26 +1,21 @@
 import {useEffect, useState} from 'react';
-import {Item} from '../../firebase/firestoreService';
+import {Category, Item, getCategories} from '../../firebase/firestoreService';
 import {Flex, Text, Button, Stack, Modal, Group} from '@mantine/core';
 import {Link, useNavigate} from 'react-router-dom';
 
 interface ItemTableProps {
   items: Item[];
+  categories: Category[];
 }
 
-const ItemsTable: React.FC<ItemTableProps> = ({items}) => {
-  const [itemsList, setItemsList] = useState<Item[]>([]);
+const ItemsTable: React.FC<ItemTableProps> = ({items, categories}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
-
-  useEffect(() => {
-    console.log('Received items:', items);
-    setItemsList(items);
-  }, [items]);
 
   const navigate = useNavigate();
 
   const handleEdit = (itemId: string) => {
-    navigate(`/edit-item/${itemId}`);
+    navigate(`/items/${itemId}`);
   };
 
   const handleDelete = (itemId: string) => {
@@ -28,7 +23,7 @@ const ItemsTable: React.FC<ItemTableProps> = ({items}) => {
     setIsModalOpen(true);
   };
 
-  const rows = itemsList.map((item) => (
+  const rows = items.map((item) => (
     <Flex
       columnGap="md"
       py="sm"
@@ -37,15 +32,24 @@ const ItemsTable: React.FC<ItemTableProps> = ({items}) => {
       key={item.name}
     >
       <Text flex={1}>{item.name}</Text>
+      <Text flex={1}>
+        {categories.find((cat) => cat.id === item.category_id)?.name || 'Unknown Category'}
+      </Text>
       <Button
         component={Link}
-        to={`/categories/edit/${item.id}`}
+        to={`/items/${item.id}`}
         variant="outline"
+        size="xs"
         onClick={() => item.id && handleEdit(item.id)}
       >
         Edit
       </Button>
-      <Button variant="outline" color="red" onClick={() => item.id && handleDelete(item.id)}>
+      <Button
+        variant="outline"
+        color="red"
+        size="xs"
+        onClick={() => item.id && handleDelete(item.id)}
+      >
         Delete
       </Button>
     </Flex>

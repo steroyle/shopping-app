@@ -142,6 +142,23 @@ export async function getCategoryById(categoryId: string): Promise<Category | nu
   }
 }
 
+export async function getItemById(itemId: string): Promise<Item | null> {
+  try {
+    const docRef = doc(db, 'items', itemId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return {...docSnap.data(), id: docSnap.id} as Item;
+    } else {
+      console.log('No item found with that ID');
+      return null;
+    }
+  } catch (e) {
+    console.error('Error retrieving item: ', e);
+    return null;
+  }
+}
+
 export async function updateCategory(
   categoryId: string,
   category: Partial<Category>,
@@ -152,6 +169,16 @@ export async function updateCategory(
     console.log('Category updated successfully');
   } catch (e) {
     console.error('Error updating category: ', e);
+  }
+}
+
+export async function updateItem(itemId: string, item: Partial<Item>): Promise<void> {
+  try {
+    const itemRef = doc(db, 'items', itemId);
+    await updateDoc(itemRef, item);
+    console.log('Item updated successfully');
+  } catch (e) {
+    console.error('Error updating item: ', e);
   }
 }
 

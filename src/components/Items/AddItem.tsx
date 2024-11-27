@@ -14,22 +14,18 @@ import {
   useCombobox,
 } from '@mantine/core';
 
-function AddItem() {
+interface AddItemProps {
+  categories: Category[];
+  onAddItem: (item: Item) => void;
+}
+
+function AddItem({categories, onAddItem}: AddItemProps) {
   const [name, setName] = useState('');
   const [category_id, setCategoryId] = useState('');
-  const [categories, setCategories] = useState<Category[]>([]);
-
-  useEffect(() => {
-    async function fetchCategories() {
-      const categories = await getCategories();
-      setCategories(categories);
-    }
-    fetchCategories();
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await addItem({name, category_id});
+    await onAddItem({name, category_id});
     setName('');
     setCategoryId('');
   };

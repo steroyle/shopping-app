@@ -1,26 +1,37 @@
-import Page from '../layouts/Page';
+import {useState, useEffect} from 'react';
+import {getCategories, addItem, Item, Category, getItems} from '../firebase/firestoreService';
 import AddItem from '../components/Items/AddItem';
-import ManageItems from '../components/Items/ManageItems';
 import ItemsTable from '../components/Items/ItemsTable';
-import {getItems, Item} from '../firebase/firestoreService';
-import {useEffect, useState} from 'react';
+import Page from '../layouts/Page';
 
 export function ItemsPage() {
   const [items, setItems] = useState<Item[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
-    async function fetchItems() {
-      const items = await getItems();
-      setItems(items);
-    }
+    const fetchCategories = async () => {
+      const categoriesData = await getCategories();
+      setCategories(categoriesData);
+    };
+
+    const fetchItems = async () => {
+      const itemsData = await getItems();
+      setItems(itemsData);
+    };
+
+    fetchCategories();
     fetchItems();
   }, []);
 
+  const handleAddItem = async (newItem: Item) => {
+    await addItem(newItem);
+    setItems((prevItems) => [...prevItems, newItem]);
+  };
+
   return (
     <Page title="Items">
-      <AddItem />
-      {/* <ManageItems /> */}
-      <ItemsTable items={items} />
+      <AddItem categories={categories} onAddItem={handleAddItem} />
+      <ItemsTable items={items} categories={categories} />
     </Page>
   );
 }

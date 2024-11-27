@@ -13,14 +13,13 @@ const CategoryTable: React.FC<CategoryTableProps> = ({categories}) => {
   const [categoryToDelete, setCategoryToDelete] = useState<string | null>(null); // State for category to delete
 
   useEffect(() => {
-    console.log('Received categories:', categories);
     setCategoryList(categories);
   }, [categories]);
 
   const navigate = useNavigate();
 
   const handleEdit = (categoryId: string) => {
-    navigate(`/edit-category/${categoryId}`);
+    navigate(`/categories/${categoryId}`);
   };
 
   const handleDelete = (categoryId: string) => {
@@ -59,8 +58,9 @@ const CategoryTable: React.FC<CategoryTableProps> = ({categories}) => {
       <Text flex={1}>{category.name}</Text>
       <Button
         component={Link}
-        to={`/categories/edit/${category.id}`}
+        to={`/categories/${category.id}`}
         variant="outline"
+        size="xs"
         onClick={() => category.id && handleEdit(category.id)}
       >
         Edit
@@ -68,6 +68,7 @@ const CategoryTable: React.FC<CategoryTableProps> = ({categories}) => {
       <Button
         variant="outline"
         color="red"
+        size="xs"
         onClick={() => category.id && handleDelete(category.id)}
       >
         Delete
@@ -84,10 +85,12 @@ const CategoryTable: React.FC<CategoryTableProps> = ({categories}) => {
           category?
         </Text>
         <Group>
-          <Button color="red" onClick={confirmDelete}>
+          <Button color="red" size="xs" onClick={confirmDelete}>
             Yes, Delete
           </Button>
-          <Button onClick={() => setIsModalOpen(false)}>Cancel</Button>
+          <Button size="xs" onClick={() => setIsModalOpen(false)}>
+            Cancel
+          </Button>
         </Group>
       </Modal>
     </>
