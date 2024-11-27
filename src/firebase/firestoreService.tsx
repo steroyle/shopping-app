@@ -1,10 +1,10 @@
 import {db} from './firebaseConfig';
 import {collection, addDoc, doc, updateDoc, getDocs, getDoc, deleteDoc} from 'firebase/firestore';
 
-interface Item {
+export interface Item {
+  id?: string; // Firebase auto-generated ID
   name: string;
-  category: string;
-  price: number;
+  category_id: string;
 }
 
 interface ShoppingListMetadata {
@@ -92,13 +92,35 @@ export async function addCategory(category: Category): Promise<void> {
 export async function getCategories(): Promise<Category[]> {
   try {
     const querySnapshot = await getDocs(collection(db, 'categories'));
-    console.log(querySnapshot.docs);
+
     return querySnapshot.docs.map((doc) => ({
       id: doc.id, // Firebase ID
       ...doc.data(), // Spread the rest of the document data
     })) as Category[];
   } catch (e) {
     console.error('Error retrieving categories: ', e);
+    return [];
+  }
+}
+
+export async function getItems(): Promise<Item[]> {
+  try {
+    const querySnapshot = await getDocs(collection(db, 'items'));
+
+    return querySnapshot.docs.map((doc) => {
+      const data = doc.data();
+      // Verify the data has required Item properties
+      if (!data.name || !data.category_id) {
+        throw new Error(`Item ${doc.id} is missing required fields`);
+      }
+      return {
+        id: doc.id,
+        name: data.name,
+        category_id: data.category_id,
+      } as Item;
+    });
+  } catch (e) {
+    console.error('Error retrieving items: ', e);
     return [];
   }
 }

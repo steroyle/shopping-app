@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import {addItem, Category} from '../../firebase/firestoreService';
+import {addItem, Category, Item} from '../../firebase/firestoreService';
 import {getCategories} from '../../firebase/firestoreService';
 import {
   Box,
@@ -16,8 +16,7 @@ import {
 
 function AddItem() {
   const [name, setName] = useState('');
-  const [category, setCategory] = useState('');
-  const [price, setPrice] = useState('');
+  const [category_id, setCategoryId] = useState('');
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
@@ -30,26 +29,25 @@ function AddItem() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await addItem({name, category, price: parseFloat(price)});
+    await addItem({name, category_id});
     setName('');
-    setCategory('');
-    setPrice('');
+    setCategoryId('');
   };
 
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
   });
 
-  const [value, setValue] = useState<string | null>(null);
-
-  const options = categories.map((item) => (
-    <Combobox.Option value={item.name} key={item.name}>
-      <Group gap="sm">
-        <Box w={15} h={15} bg={item.color} style={{borderRadius: '50%'}} />
-        <Text>{item.name}</Text>
-      </Group>
-    </Combobox.Option>
-  ));
+  const options = categories
+    .filter((category) => category.id !== undefined)
+    .map((category) => (
+      <Combobox.Option value={category.id as string} key={category.id}>
+        <Group gap="sm">
+          <Box w={15} h={15} bg={category.color} style={{borderRadius: '50%'}} />
+          <Text>{category.name}</Text>
+        </Group>
+      </Combobox.Option>
+    ));
 
   return (
     <Paper withBorder p="md" bg="gray.0">
@@ -60,7 +58,7 @@ function AddItem() {
           <Combobox
             store={combobox}
             onOptionSubmit={(val) => {
-              setValue(val);
+              setCategoryId(val);
               combobox.closeDropdown();
             }}
           >
@@ -74,7 +72,9 @@ function AddItem() {
                 onClick={() => combobox.toggleDropdown()}
                 w={250}
               >
-                {value || <Input.Placeholder>Pick value</Input.Placeholder>}
+                {categories.find((cat) => cat.id === category_id)?.name || (
+                  <Input.Placeholder>Category</Input.Placeholder>
+                )}
               </InputBase>
             </Combobox.Target>
 
