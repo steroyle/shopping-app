@@ -50,7 +50,7 @@ function AddItem({categories, onAddItem}: AddItemProps) {
       <form onSubmit={handleSubmit}>
         <Group gap="sm">
           <TextInput value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" />
-
+          {/* TODO: Add form validation, not setting a category will crash the item list */}
           <Combobox
             store={combobox}
             onOptionSubmit={(val) => {

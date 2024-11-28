@@ -1,13 +1,10 @@
-import {Text} from '@mantine/core';
-import {useAuth} from '../contexts/AuthContext';
 import Page from '../layouts/Page';
+import ShoppingList from '../components/ShoppingList/ShoppingList';
 
 export function HomePage() {
-  const {user} = useAuth();
-
   return (
-    <Page title={`Welcome, ${user?.displayName}`}>
-      <Text>Home page content</Text>
+    <Page title={`Shopping list`}>
+      <ShoppingList />
     </Page>
   );
 }

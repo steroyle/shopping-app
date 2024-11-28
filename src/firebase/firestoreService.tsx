@@ -211,3 +211,32 @@ export async function deleteItem(itemId: string): Promise<void> {
     console.error('Error removing item: ', error);
   }
 }
+
+export async function getItemsGroupedByCategory() {
+  const categoriesCollection = collection(db, 'categories');
+  const itemsCollection = collection(db, 'items');
+
+  const categoriesSnapshot = await getDocs(categoriesCollection);
+  const itemsSnapshot = await getDocs(itemsCollection);
+
+  const categories = categoriesSnapshot.docs.map((doc) => ({
+    id: doc.id,
+    name: doc.data().name,
+    color: doc.data().color,
+  }));
+
+  const items = itemsSnapshot.docs.map((doc) => ({
+    id: doc.id,
+    categoryId: doc.data().category_id,
+    name: doc.data().name,
+  }));
+
+  // Group items by category
+  const groupedData = categories.map((category) => ({
+    name: category.name,
+    color: category.color,
+    items: items.filter((item) => item.categoryId === category.id),
+  }));
+
+  return groupedData;
+}

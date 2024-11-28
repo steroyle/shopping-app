@@ -33,8 +33,10 @@ export function ItemsPage() {
     setItems(updatedItems);
   };
 
+  const pageTitle = `Items (${items.length})`;
+
   return (
-    <Page title="Items">
+    <Page title={pageTitle}>
       <Stack gap="md">
         <AddItem categories={categories} onAddItem={handleAddItem} />
         <ItemsTable items={items} categories={categories} onItemsChange={handleItemsChange} />
