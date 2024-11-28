@@ -201,3 +201,13 @@ export async function deleteCategory(categoryId: string): Promise<void> {
     console.error('Error removing category: ', error);
   }
 }
+
+export async function deleteItem(itemId: string): Promise<void> {
+  try {
+    const itemRef = doc(db, 'items', itemId);
+    await deleteDoc(itemRef);
+    console.log('Item successfully deleted!');
+  } catch (error) {
+    console.error('Error removing item: ', error);
+  }
+}

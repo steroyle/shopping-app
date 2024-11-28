@@ -29,11 +29,15 @@ export function ItemsPage() {
     setItems((prevItems) => [...prevItems, newItem]);
   };
 
+  const handleItemsChange = (updatedItems: Item[]) => {
+    setItems(updatedItems);
+  };
+
   return (
     <Page title="Items">
       <Stack gap="md">
         <AddItem categories={categories} onAddItem={handleAddItem} />
-        <ItemsTable items={items} categories={categories} />
+        <ItemsTable items={items} categories={categories} onItemsChange={handleItemsChange} />
       </Stack>
     </Page>
   );
