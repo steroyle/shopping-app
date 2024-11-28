@@ -166,18 +166,28 @@ export async function updateCategory(
   try {
     const categoryRef = doc(db, 'categories', categoryId);
     await updateDoc(categoryRef, category);
-    console.log('Category updated successfully');
+    console.log(category);
   } catch (e) {
     console.error('Error updating category: ', e);
   }
 }
 
+/**
+ * Updates an existing item in Firestore
+ * @param itemId - The ID of the item to update
+ * @param item - Partial Item object containing the fields to update
+ * @returns Promise that resolves when update is complete
+ */
 export async function updateItem(itemId: string, item: Partial<Item>): Promise<void> {
   try {
+    // Get reference to item document
     const itemRef = doc(db, 'items', itemId);
+    // Update the item with new data
     await updateDoc(itemRef, item);
-    console.log('Item updated successfully');
+    // Log updated item data
+    console.log(item);
   } catch (e) {
+    // Log any errors that occur during update
     console.error('Error updating item: ', e);
   }
 }

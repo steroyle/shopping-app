@@ -3,6 +3,7 @@ import {getCategories, addItem, Item, Category, getItems} from '../firebase/fire
 import AddItem from '../components/Items/AddItem';
 import ItemsTable from '../components/Items/ItemsTable';
 import Page from '../layouts/Page';
+import {Stack} from '@mantine/core';
 
 export function ItemsPage() {
   const [items, setItems] = useState<Item[]>([]);
@@ -30,8 +31,10 @@ export function ItemsPage() {
 
   return (
     <Page title="Items">
-      <AddItem categories={categories} onAddItem={handleAddItem} />
-      <ItemsTable items={items} categories={categories} />
+      <Stack gap="md">
+        <AddItem categories={categories} onAddItem={handleAddItem} />
+        <ItemsTable items={items} categories={categories} />
+      </Stack>
     </Page>
   );
 }

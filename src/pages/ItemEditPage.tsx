@@ -48,7 +48,7 @@ export function ItemEditPage() {
 
   const handleSave = async () => {
     if (item && itemId) {
-      await updateItem(itemId, {...item, category_id});
+      await updateItem(itemId, {name: item.name, category_id});
       navigate(`/items`);
     }
   };

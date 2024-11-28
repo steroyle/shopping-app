@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {Category, Item, getCategories} from '../../firebase/firestoreService';
-import {Flex, Text, Button, Stack, Modal, Group} from '@mantine/core';
+import {Flex, Text, Button, Stack, Modal, Group, Box} from '@mantine/core';
 import {Link, useNavigate} from 'react-router-dom';
 
 interface ItemTableProps {
@@ -23,37 +23,46 @@ const ItemsTable: React.FC<ItemTableProps> = ({items, categories}) => {
     setIsModalOpen(true);
   };
 
-  const rows = items.map((item) => (
-    <Flex
-      columnGap="md"
-      py="sm"
-      align="center"
-      style={{borderBottom: '1px solid #E9ECEF'}}
-      key={item.name}
-    >
-      <Text flex={1}>{item.name}</Text>
-      <Text flex={1}>
-        {categories.find((cat) => cat.id === item.category_id)?.name || 'Unknown Category'}
-      </Text>
-      <Button
-        component={Link}
-        to={`/items/${item.id}`}
-        variant="outline"
-        size="xs"
-        onClick={() => item.id && handleEdit(item.id)}
+  const rows = items.map((item) => {
+    const category = categories.find((cat) => cat.id === item.category_id);
+    return (
+      <Flex
+        columnGap="md"
+        py="sm"
+        align="center"
+        style={{borderBottom: '1px solid #E9ECEF'}}
+        key={item.name}
       >
-        Edit
-      </Button>
-      <Button
-        variant="outline"
-        color="red"
-        size="xs"
-        onClick={() => item.id && handleDelete(item.id)}
-      >
-        Delete
-      </Button>
-    </Flex>
-  ));
+        <Text flex={1}>{item.name}</Text>
+        <Box
+          style={{
+            backgroundColor: category?.color,
+            width: 25,
+            height: 25,
+            borderRadius: '50%',
+          }}
+        ></Box>
+        <Text flex={1}>{category?.name || ''}</Text>
+        <Button
+          component={Link}
+          to={`/items/${item.id}`}
+          variant="outline"
+          size="xs"
+          onClick={() => item.id && handleEdit(item.id)}
+        >
+          Edit
+        </Button>
+        <Button
+          variant="outline"
+          color="red"
+          size="xs"
+          onClick={() => item.id && handleDelete(item.id)}
+        >
+          Delete
+        </Button>
+      </Flex>
+    );
+  });
 
   return (
     <>
