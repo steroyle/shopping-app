@@ -12,7 +12,12 @@ import {ItemEditPage} from './pages/ItemEditPage';
 function App() {
   return (
     <AuthProvider>
-      <MantineProvider>
+      <MantineProvider
+        theme={{
+          fontFamily: 'Poppins, sans-serif',
+          headings: {fontFamily: 'Poppins, sans-serif', fontWeight: '600'},
+        }}
+      >
         <BrowserRouter>
           <Routes>
             <Route path="/login" element={<LoginPage />} />
