@@ -1,5 +1,5 @@
-import {Box, Flex, Grid, Group, NumberInput, Paper, Stack, Text, Title} from '@mantine/core';
-import {useEffect, useState} from 'react';
+import {Flex, Grid, Group, NumberInput, Paper, Text, Title} from '@mantine/core';
+import {useQuery} from '@tanstack/react-query';
 import {getItemsGroupedByCategory, Item} from '../../firebase/firestoreService';
 
 type GroupedCategory = {
@@ -9,12 +9,15 @@ type GroupedCategory = {
 };
 
 function ShoppingList() {
-  const [groupedCategories, setGroupedCategories] = useState<GroupedCategory[]>([]);
-
-  useEffect(() => {
-    async function fetchData() {
+  const {
+    data: groupedCategories = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['groupedCategories'],
+    queryFn: async () => {
       const data = await getItemsGroupedByCategory();
-      const transformedData = data.map((category) => ({
+      return data.map((category) => ({
         ...category,
         color: category.color,
         items: category.items.map((item) => ({
@@ -22,10 +25,11 @@ function ShoppingList() {
           category_id: item.categoryId,
         })),
       }));
-      setGroupedCategories(transformedData);
-    }
-    fetchData();
-  }, []);
+    },
+  });
+
+  if (isLoading) return <Text>Loading...</Text>;
+  if (error) return <Text>Error loading data</Text>;
 
   return (
     <>
