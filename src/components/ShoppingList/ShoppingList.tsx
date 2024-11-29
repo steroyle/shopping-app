@@ -1,12 +1,6 @@
 import {Flex, Grid, Group, NumberInput, Paper, Text, Title} from '@mantine/core';
 import {useQuery} from '@tanstack/react-query';
-import {getItemsGroupedByCategory, Item} from '../../firebase/firestoreService';
-
-type GroupedCategory = {
-  name: string;
-  color: string;
-  items: Item[];
-};
+import {getItemsGroupedByCategory} from '../../firebase/firestoreService';
 
 function ShoppingList() {
   const {

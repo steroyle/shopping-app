@@ -1,9 +1,9 @@
-import {useState, useEffect} from 'react';
-import {getCategories, addItem, Item, Category, getItems} from '../firebase/firestoreService';
+import {Stack} from '@mantine/core';
+import {useEffect, useState} from 'react';
 import AddItem from '../components/Items/AddItem';
 import ItemsTable from '../components/Items/ItemsTable';
+import {addItem, Category, getCategories, getItems, Item} from '../firebase/firestoreService';
 import Page from '../layouts/Page';
-import {Stack} from '@mantine/core';
 
 export function ItemsPage() {
   const [items, setItems] = useState<Item[]>([]);

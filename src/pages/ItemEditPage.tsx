@@ -1,25 +1,18 @@
 import {
   Box,
   Button,
-  Text,
   Combobox,
   Group,
+  Input,
+  InputBase,
   Paper,
+  Text,
   TextInput,
   useCombobox,
-  InputBase,
-  Input,
 } from '@mantine/core';
-import {useNavigate, useParams} from 'react-router-dom';
 import {useEffect, useState} from 'react';
-import {
-  Category,
-  getCategories,
-  getCategoryById,
-  getItemById,
-  updateCategory,
-  updateItem,
-} from '../firebase/firestoreService';
+import {useNavigate, useParams} from 'react-router-dom';
+import {Category, getCategories, getItemById, updateItem} from '../firebase/firestoreService';
 import Page from '../layouts/Page';
 
 export function ItemEditPage() {

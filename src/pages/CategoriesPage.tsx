@@ -1,6 +1,5 @@
-import {Title} from '@mantine/core';
-import Page from '../layouts/Page';
 import ManageCategories from '../components/ManageCategories/ManageCategories';
+import Page from '../layouts/Page';
 
 export function CategoriesPage() {
   return (

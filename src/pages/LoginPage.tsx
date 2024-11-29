@@ -1,8 +1,8 @@
-import {signInWithPopup, GoogleAuthProvider} from 'firebase/auth';
-import {auth} from '../firebase/firebaseConfig';
+import {Button, Paper, Stack, Text, Title} from '@mantine/core';
+import {GoogleAuthProvider, signInWithPopup} from 'firebase/auth';
 import {Navigate} from 'react-router-dom';
 import {useAuth} from '../contexts/AuthContext';
-import {Button, Paper, Stack, Text, Title} from '@mantine/core';
+import {auth} from '../firebase/firebaseConfig';
 import LoginLayout from '../layouts/LoginLayout';
 
 export function LoginPage() {

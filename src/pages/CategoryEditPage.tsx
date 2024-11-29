@@ -1,7 +1,7 @@
-import {Box, Button, ColorInput, Group, Paper, TextInput, Title} from '@mantine/core';
-import {useNavigate, useParams} from 'react-router-dom';
+import {Button, ColorInput, Group, Paper, TextInput} from '@mantine/core';
 import {useEffect, useState} from 'react';
-import {Category, getCategoryById, updateCategory} from '../firebase/firestoreService';
+import {useNavigate, useParams} from 'react-router-dom';
+import {getCategoryById, updateCategory} from '../firebase/firestoreService';
 import Page from '../layouts/Page';
 
 export function CategoryEditPage() {

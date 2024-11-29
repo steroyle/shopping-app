@@ -1,7 +1,7 @@
-import {useEffect, useState} from 'react';
-import {Category, Item, deleteItem, getCategories} from '../../firebase/firestoreService';
-import {Flex, Text, Button, Stack, Modal, Group, Box} from '@mantine/core';
+import {Box, Button, Flex, Group, Modal, Stack, Text} from '@mantine/core';
+import {useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
+import {Category, Item, deleteItem} from '../../firebase/firestoreService';
 
 interface ItemTableProps {
   items: Item[];

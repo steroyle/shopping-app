@@ -1,14 +1,14 @@
+import {MantineProvider} from '@mantine/core';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
-import {MantineProvider} from '@mantine/core';
-import {AuthProvider} from './contexts/AuthContext';
 import {ProtectedRoute} from './components/ProtectedRoute';
-import {LoginPage} from './pages/LoginPage';
-import {HomePage} from './pages/HomePage';
-import {ItemsPage} from './pages/ItemsPage';
+import {AuthProvider} from './contexts/AuthContext';
 import {CategoriesPage} from './pages/CategoriesPage';
 import {CategoryEditPage} from './pages/CategoryEditPage';
+import {HomePage} from './pages/HomePage';
 import {ItemEditPage} from './pages/ItemEditPage';
+import {ItemsPage} from './pages/ItemsPage';
+import {LoginPage} from './pages/LoginPage';
 
 const queryClient = new QueryClient();
 

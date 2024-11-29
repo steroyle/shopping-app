@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
 import {Box, Button, Flex, Group, Modal, Stack, Text} from '@mantine/core';
-import {Category, deleteCategory} from '../../firebase/firestoreService';
+import React, {useEffect, useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
+import {Category, deleteCategory} from '../../firebase/firestoreService';
 
 interface CategoryTableProps {
   categories: Category[];

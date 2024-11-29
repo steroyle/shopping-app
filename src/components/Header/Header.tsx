@@ -1,6 +1,6 @@
-import {Box, Container, Group, Title, Text} from '@mantine/core';
-import LogoutButton from '../LogoutButton/LogoutButton';
+import {Box, Container, Group, Text, Title} from '@mantine/core';
 import {useAuth} from '../../contexts/AuthContext';
+import LogoutButton from '../LogoutButton/LogoutButton';
 
 function Header() {
   const {user} = useAuth();

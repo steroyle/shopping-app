@@ -1,7 +1,7 @@
-import {useState, useEffect} from 'react';
-import {addCategory, getCategories, Category} from '../../firebase/firestoreService';
+import {Button, ColorInput, Group, Paper, Stack, TextInput} from '@mantine/core';
+import {useEffect, useState} from 'react';
+import {addCategory, Category, getCategories} from '../../firebase/firestoreService';
 import CategoryTable from '../CategoryTable/CategoriesTable';
-import {Button, ColorInput, Group, Paper, Stack, TextInput, Title} from '@mantine/core';
 
 function ManageCategories() {
   const [categoryName, setCategoryName] = useState('');

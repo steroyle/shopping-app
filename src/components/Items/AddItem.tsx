@@ -1,6 +1,3 @@
-import {useState, useEffect} from 'react';
-import {addItem, Category, Item} from '../../firebase/firestoreService';
-import {getCategories} from '../../firebase/firestoreService';
 import {
   Box,
   Button,
@@ -13,6 +10,8 @@ import {
   TextInput,
   useCombobox,
 } from '@mantine/core';
+import {useState} from 'react';
+import {Category, Item} from '../../firebase/firestoreService';
 
 interface AddItemProps {
   categories: Category[];
