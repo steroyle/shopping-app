@@ -1,6 +1,7 @@
 import {Flex, Grid, Group, NumberInput, Paper, Text, Title} from '@mantine/core';
 import {useQuery} from '@tanstack/react-query';
 import {getItemsGroupedByCategory} from '../../firebase/firestoreService';
+import QuantityInput from '../QuantityInput/QuantityInput';
 
 function ShoppingList() {
   const {
@@ -30,7 +31,17 @@ function ShoppingList() {
       {groupedCategories
         .filter((category) => category.items.length) // Remove empty categories
         .map((category) => (
-          <>
+          <Paper
+            withBorder
+            p="xs"
+            bg="gray.0"
+            mb="xl"
+            style={{
+              borderLeft: `10px solid ${category.color}`,
+              borderTopLeftRadius: 0,
+              borderBottomLeftRadius: 0,
+            }}
+          >
             <Flex columnGap="xs" mb="lg">
               <Title order={2} fz="lg">
                 {category.name}
@@ -38,31 +49,15 @@ function ShoppingList() {
             </Flex>
             <Grid gutter={{base: 'xs', md: 'md'}} mb="xl">
               {category.items.map((item) => (
-                <Grid.Col span={{base: 12, sm: 6, md: 4}}>
-                  <Paper
-                    withBorder
-                    p="xs"
-                    bg="gray.0"
-                    style={{
-                      borderLeft: `10px solid ${category.color}`,
-                      borderTopLeftRadius: 0,
-                      borderBottomLeftRadius: 0,
-                    }}
-                  >
-                    <Group key={item.id}>
-                      <Text flex={1}>{item.name}</Text>
-                      <NumberInput
-                        w={70}
-                        value={0}
-                        // onChange={(value) => handleQuantityChange(item.id, value)}
-                        min={0}
-                      />
-                    </Group>
-                  </Paper>
+                <Grid.Col span={12} py="sm" style={{borderTop: '1px solid #e9ecef'}}>
+                  <Group key={item.id}>
+                    <Text flex={1}>{item.name}</Text>
+                    <QuantityInput />
+                  </Group>
                 </Grid.Col>
               ))}
             </Grid>
-          </>
+          </Paper>
         ))}
     </>
   );
