@@ -14,6 +14,7 @@ import {useEffect, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import {Category, getCategories, getItemById, updateItem} from '../firebase/firestoreService';
 import Page from '../layouts/Page';
+import {useQueryClient} from '@tanstack/react-query';
 
 export function ItemEditPage() {
   const {itemId} = useParams<{itemId: string}>();
@@ -21,6 +22,7 @@ export function ItemEditPage() {
   const [item, setItem] = useState<{name: string; category_id: string} | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [category_id, setCategoryId] = useState('');
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -41,8 +43,23 @@ export function ItemEditPage() {
 
   const handleSave = async () => {
     if (item && itemId) {
-      await updateItem(itemId, {name: item.name, category_id});
-      navigate(`/items`);
+      try {
+        // Wait for the update
+        await updateItem(itemId, {name: item.name, category_id});
+
+        // Wait for all cache operations to complete
+        await Promise.all([
+          queryClient.invalidateQueries({queryKey: ['items', 'v1']}),
+          queryClient.invalidateQueries({queryKey: ['groupedCategories', 'v1']}),
+          queryClient.refetchQueries({queryKey: ['items', 'v1'], exact: true}),
+          queryClient.refetchQueries({queryKey: ['groupedCategories', 'v1'], exact: true}),
+        ]);
+
+        // Only navigate after everything is done
+        navigate('/items');
+      } catch (error) {
+        console.error('Error saving item:', error);
+      }
     }
   };
 

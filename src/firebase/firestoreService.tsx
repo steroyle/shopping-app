@@ -30,6 +30,7 @@ export interface Category {
 }
 
 export async function addItem(item: Item): Promise<void> {
+  console.log('Calling Firebase: addItem');
   try {
     const docRef = await addDoc(collection(db, 'items'), item);
     console.log('Item added with ID: ', docRef.id);
@@ -42,6 +43,7 @@ export async function createShoppingList(
   listName: string,
   createdBy: string,
 ): Promise<ListId | undefined> {
+  console.log('Calling Firebase: createShoppingList');
   try {
     const listRef = await addDoc(collection(db, 'shoppingLists'), {
       name: listName,
@@ -60,6 +62,7 @@ export async function addItemToShoppingList(
   itemId: ItemId,
   quantity: Quantity,
 ): Promise<void> {
+  console.log('Calling Firebase: addItemToShoppingList');
   try {
     const listRef = doc(db, 'shoppingLists', listId);
     await addDoc(collection(listRef, 'items'), {
@@ -74,6 +77,7 @@ export async function addItemToShoppingList(
 }
 
 export async function markItemAsCollected(listId: ListId, itemId: ItemId): Promise<void> {
+  console.log('Calling Firebase: markItemAsCollected');
   const itemRef = doc(db, 'shoppingLists', listId, 'items', itemId);
   await updateDoc(itemRef, {
     isCollected: true,
@@ -81,6 +85,7 @@ export async function markItemAsCollected(listId: ListId, itemId: ItemId): Promi
 }
 
 export async function addCategory(category: Category): Promise<void> {
+  console.log('Calling Firebase: addCategory');
   try {
     const docRef = await addDoc(collection(db, 'categories'), category);
     console.log('Category added with ID: ', docRef.id);
@@ -90,6 +95,7 @@ export async function addCategory(category: Category): Promise<void> {
 }
 
 export async function getCategories(): Promise<Category[]> {
+  console.log('Calling Firebase: getCategories');
   try {
     const querySnapshot = await getDocs(collection(db, 'categories'));
 
@@ -104,6 +110,7 @@ export async function getCategories(): Promise<Category[]> {
 }
 
 export async function getItems(): Promise<Item[]> {
+  console.log('Calling Firebase: getItems');
   try {
     const querySnapshot = await getDocs(collection(db, 'items'));
 
@@ -126,6 +133,7 @@ export async function getItems(): Promise<Item[]> {
 }
 
 export async function getCategoryById(categoryId: string): Promise<Category | null> {
+  console.log('Calling Firebase: getCategoryById', categoryId);
   try {
     const docRef = doc(db, 'categories', categoryId);
     const docSnap = await getDoc(docRef);
@@ -143,6 +151,7 @@ export async function getCategoryById(categoryId: string): Promise<Category | nu
 }
 
 export async function getItemById(itemId: string): Promise<Item | null> {
+  console.log('Calling Firebase: getItemById', itemId);
   try {
     const docRef = doc(db, 'items', itemId);
     const docSnap = await getDoc(docRef);
@@ -163,6 +172,7 @@ export async function updateCategory(
   categoryId: string,
   category: Partial<Category>,
 ): Promise<void> {
+  console.log('Calling Firebase: updateCategory', categoryId);
   try {
     const categoryRef = doc(db, 'categories', categoryId);
     await updateDoc(categoryRef, category);
@@ -179,6 +189,7 @@ export async function updateCategory(
  * @returns Promise that resolves when update is complete
  */
 export async function updateItem(itemId: string, item: Partial<Item>): Promise<void> {
+  console.log('Calling Firebase: updateItem', itemId);
   try {
     // Get reference to item document
     const itemRef = doc(db, 'items', itemId);
@@ -193,6 +204,7 @@ export async function updateItem(itemId: string, item: Partial<Item>): Promise<v
 }
 
 export async function deleteCategory(categoryId: string): Promise<void> {
+  console.log('Calling Firebase: deleteCategory', categoryId);
   try {
     const categoryRef = doc(db, 'categories', categoryId);
     await deleteDoc(categoryRef);
@@ -203,6 +215,7 @@ export async function deleteCategory(categoryId: string): Promise<void> {
 }
 
 export async function deleteItem(itemId: string): Promise<void> {
+  console.log('Calling Firebase: deleteItem', itemId);
   try {
     const itemRef = doc(db, 'items', itemId);
     await deleteDoc(itemRef);
@@ -213,6 +226,7 @@ export async function deleteItem(itemId: string): Promise<void> {
 }
 
 export async function getItemsGroupedByCategory() {
+  console.log('Calling Firebase: getItemsGroupedByCategory');
   const categoriesCollection = collection(db, 'categories');
   const itemsCollection = collection(db, 'items');
 

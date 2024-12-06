@@ -1,5 +1,7 @@
 import {MantineProvider} from '@mantine/core';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {persistQueryClient} from '@tanstack/react-query-persist-client';
+import {createSyncStoragePersister} from '@tanstack/query-sync-storage-persister';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import {ProtectedRoute} from './components/ProtectedRoute';
 import {AuthProvider} from './contexts/AuthContext';
@@ -10,7 +12,28 @@ import {ItemEditPage} from './pages/ItemEditPage';
 import {ItemsPage} from './pages/ItemsPage';
 import {LoginPage} from './pages/LoginPage';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      gcTime: 30 * 60 * 1000, // 30 minutes
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    },
+  },
+});
+
+// Create a persister
+const persister = createSyncStoragePersister({
+  storage: window.localStorage,
+});
+
+// Setup query persistence
+persistQueryClient({
+  queryClient,
+  persister,
+  maxAge: 24 * 60 * 60 * 1000, // 24 hours
+});
 
 function App() {
   return (

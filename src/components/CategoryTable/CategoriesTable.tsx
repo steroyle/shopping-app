@@ -1,5 +1,6 @@
 import {Box, Button, Flex, Group, Modal, Stack, Text} from '@mantine/core';
-import React, {useEffect, useState} from 'react';
+import {useQueryClient} from '@tanstack/react-query';
+import React, {useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {Category, deleteCategory} from '../../firebase/firestoreService';
 
@@ -8,14 +9,9 @@ interface CategoryTableProps {
 }
 
 const CategoryTable: React.FC<CategoryTableProps> = ({categories}) => {
-  const [categoryList, setCategoryList] = useState<Category[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
-  const [categoryToDelete, setCategoryToDelete] = useState<string | null>(null); // State for category to delete
-
-  useEffect(() => {
-    setCategoryList(categories);
-  }, [categories]);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [categoryToDelete, setCategoryToDelete] = useState<string | null>(null);
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const handleEdit = (categoryId: string) => {
@@ -28,23 +24,21 @@ const CategoryTable: React.FC<CategoryTableProps> = ({categories}) => {
   };
 
   const getCategoryName = (categoryId: string | null) => {
-    const category = categoryList.find((cat) => cat.id === categoryId);
+    const category = categories.find((cat) => cat.id === categoryId);
     return category ? category.name : '';
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (categoryToDelete) {
-      deleteCategory(categoryToDelete).then(() => {
-        setCategoryList((prevCategories) =>
-          prevCategories.filter((category) => category.id !== categoryToDelete),
-        );
-        setIsModalOpen(false);
-        setCategoryToDelete(null);
-      });
+      await deleteCategory(categoryToDelete);
+      // Invalidate and refetch categories query after deletion
+      queryClient.invalidateQueries({queryKey: ['categories']});
+      setIsModalOpen(false);
+      setCategoryToDelete(null);
     }
   };
 
-  const rows = categoryList.map((category) => (
+  const rows = categories.map((category) => (
     <Flex
       columnGap="md"
       py="sm"

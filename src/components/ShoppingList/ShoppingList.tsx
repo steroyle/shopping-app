@@ -9,7 +9,7 @@ function ShoppingList() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ['groupedCategories'],
+    queryKey: ['groupedCategories', 'v1'],
     queryFn: async () => {
       const data = await getItemsGroupedByCategory();
       return data.map((category) => ({
@@ -41,6 +41,7 @@ function ShoppingList() {
               borderTopLeftRadius: 0,
               borderBottomLeftRadius: 0,
             }}
+            key={category.name}
           >
             <Flex columnGap="xs" mb="lg">
               <Title order={2} fz="lg">
@@ -49,8 +50,8 @@ function ShoppingList() {
             </Flex>
             <Grid gutter={{base: 'xs', md: 'md'}} mb="xl">
               {category.items.map((item) => (
-                <Grid.Col span={12} py="sm" style={{borderTop: '1px solid #e9ecef'}}>
-                  <Group key={item.id}>
+                <Grid.Col key={item.id} span={12} py="sm" style={{borderTop: '1px solid #e9ecef'}}>
+                  <Group>
                     <Text flex={1}>{item.name}</Text>
                     <QuantityInput />
                   </Group>

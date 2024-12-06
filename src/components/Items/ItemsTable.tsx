@@ -2,18 +2,19 @@ import {Box, Button, Flex, Group, Modal, Stack, Text} from '@mantine/core';
 import {useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {Category, Item, deleteItem} from '../../firebase/firestoreService';
+import {useQueryClient} from '@tanstack/react-query';
 
 interface ItemTableProps {
   items: Item[];
   categories: Category[];
-  onItemsChange: (updatedItems: Item[]) => void;
 }
 
-const ItemsTable: React.FC<ItemTableProps> = ({items, categories, onItemsChange}) => {
+const ItemsTable: React.FC<ItemTableProps> = ({items, categories}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
 
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const handleEdit = (itemId: string) => {
     navigate(`/items/${itemId}`);
@@ -24,15 +25,12 @@ const ItemsTable: React.FC<ItemTableProps> = ({items, categories, onItemsChange}
     setIsModalOpen(true);
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (itemToDelete) {
-      console.log('deleting item', itemToDelete);
-      deleteItem(itemToDelete).then(() => {
-        // Notify parent component about the deleted item
-        onItemsChange(items.filter((item) => item.id !== itemToDelete));
-        setIsModalOpen(false);
-        setItemToDelete(null);
-      });
+      await deleteItem(itemToDelete);
+      queryClient.invalidateQueries({queryKey: ['items']});
+      setIsModalOpen(false);
+      setItemToDelete(null);
     }
   };
 
@@ -44,7 +42,7 @@ const ItemsTable: React.FC<ItemTableProps> = ({items, categories, onItemsChange}
         py="sm"
         align="center"
         style={{borderBottom: '1px solid #E9ECEF'}}
-        key={item.name}
+        key={item.id}
       >
         <Text flex={1}>{item.name}</Text>
         <Box
